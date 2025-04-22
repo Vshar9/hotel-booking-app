@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
-import { HotelType } from "../../../backend/src/models/hotel";
+import { HotelType } from "../../../backend/src/shared/types";
 import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
 
@@ -57,7 +57,7 @@ const MyHotels = () => {
               </div>
             </div>
             <span className="flex justify-end">
-                <Link to={'/edit-hotel/${hotel._id}'} className="flex bg-green-600 text-white text-xl font-bold p-2 hover:bg-green-500 m-5">View Details</Link>
+                <Link to={`/edit-hotel/${hotel._id}`} className="flex bg-green-600 text-white text-xl font-bold p-2 hover:bg-green-500 m-5">View Details</Link>
             </span>
           </div>
         ))}
