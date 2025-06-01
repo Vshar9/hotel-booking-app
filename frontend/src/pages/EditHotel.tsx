@@ -19,7 +19,7 @@ const EditHotel = ()=>{
         onSuccess: ()=>{
             showToast({message: "Hotel Saved!", type: "SUCCESS"})
         },
-        onError: (error)=>{
+        onError: ()=>{
             showToast({message: "Error saving hotel", type: "ERROR"})
         }
     })

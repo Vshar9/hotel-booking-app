@@ -53,7 +53,7 @@ const DetailsSection = ()=>{
                     >
                         <option value="" className="text-sm font-bold">Select Rating</option>
                         {[1,2,3,4,5].map((num)=> 
-                        <option value={num} className="text-sm font-bold">{num}
+                        <option key={num} value={num} className="text-sm font-bold">{num}
                         </option>)}
                     </select>
                     {errors.starRating && 

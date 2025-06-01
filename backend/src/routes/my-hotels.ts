@@ -84,7 +84,7 @@ const viewHotelHandler : RequestHandler = async(req : Request,res : Response)=>{
             _id: id,
             userId: req.userId
         })
-        res.json(hotel)
+        res.status(200).json(hotel)
     }catch(error){
         res.status(500).json({
             message: "Error fetching hotels"
