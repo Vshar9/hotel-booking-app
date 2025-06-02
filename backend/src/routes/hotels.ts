@@ -1,8 +1,29 @@
 import express, { Request, RequestHandler, Response } from "express";
 import Hotel from "../models/hotel";
 import { HotelSearchResponse } from "../shared/types";
+import { param, validationResult } from "express-validator";
 
 const router = express.Router();
+
+const fetchSingleHotel : RequestHandler = async(req: Request,res: Response)=>{
+    const errors =validationResult(req);
+    if(!errors.isEmpty()){
+        res.status(400).json({errors:errors.array()});
+        return;
+    }
+
+    const id = req.params.id.toString();
+    try{
+        const hotel = await Hotel.findById(id);
+        res.json(hotel);
+        return;
+    }
+    catch(error){
+        res.status(500).json({message: "Error fetching hotel"});
+        return;
+    }
+
+}
 
 const constructSearchQuery = (queryParams: any)=>{
     let constructedQuery: any = {};
@@ -24,7 +45,7 @@ const constructSearchQuery = (queryParams: any)=>{
     }
     if(queryParams.facilities) {
         constructedQuery.facilities = {
-            $all: Array.isArray(queryParams.facilities) ? queryParams.facilites : [queryParams.facilites],
+            $all: Array.isArray(queryParams.facilities) ? queryParams.facilities : [queryParams.facilities],
         }
     }
     if(queryParams.types){
@@ -38,7 +59,7 @@ const constructSearchQuery = (queryParams: any)=>{
     }
     if(queryParams.maxPrice){
         constructedQuery.pricePerNight = {
-            $lte: parseInt(queryParams.maxPrice).toString(),
+            $lte: parseInt(queryParams.maxPrice),
         }
     }
     return constructedQuery;
@@ -89,5 +110,10 @@ const searchHandler : RequestHandler = async (req : Request, res: Response)=>{
 }
 
 router.get("/search",searchHandler)
+
+router.get("/:id",[
+    param("id").notEmpty().withMessage("Hotel ID is required")
+],fetchSingleHotel);
+
 
 export default router;
