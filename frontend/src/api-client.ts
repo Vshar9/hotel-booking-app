@@ -1,10 +1,21 @@
 import { RegisterFormData } from "./pages/Register"
 import { SignInFormData } from "./pages/SignIn";
-import { HotelSearchResponse, HotelType } from "../../backend/src/shared/types";
+import { HotelSearchResponse, HotelType, PaymentIntentResponse } from "../../backend/src/shared/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
+export const fetchCurrentUser = async ()=>{
+    const response = await fetch(`${API_BASE_URL}/api/users/me`,{
+        credentials: "include"
+    })
+    if(!response.ok){
+        throw new Error("Error fetching userS")
+    }
+    return await response.json();
+}
+
 export const register = async(formData: RegisterFormData)=>{
+    console.log("Sent request")
     const response = await fetch(`${API_BASE_URL}/api/users/register`,{
         method: 'POST',
         credentials: "include",
@@ -13,6 +24,7 @@ export const register = async(formData: RegisterFormData)=>{
         },
         body: JSON.stringify(formData),
     });
+    console.log(response);
     
     const responseBody = await response.json();
 
@@ -166,3 +178,21 @@ export const fetchHotelById = async(hotelId: string) => {
     return response.json();
 }
 
+export const createPaymentIntent = async(hotelId: string, numberOfNights: string):Promise<PaymentIntentResponse>=>{
+    const response = await fetch(`${API_BASE_URL}/api/hotels/${hotelId}/bookings/payment-intent`,
+        {
+            credentials: "include",
+            method: "POST",
+            body: JSON.stringify({numberOfNights}),
+            headers:{
+                "Content-Type": "application/json", 
+            }
+        }
+    )
+
+    if(!response.ok){
+        throw new Error("Error fetching payment intent");
+    }
+
+    return response.json();
+}
