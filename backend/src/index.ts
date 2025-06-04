@@ -10,6 +10,7 @@ import userRoutes from './routes/users';
 import authRoutes from './routes/auth';
 import myHotelRoutes from './routes/my-hotels';
 import hotelRoutes from './routes/hotels';
+import bookingRoutes from './routes/bookings';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -48,7 +49,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
 app.use("/api/hotels",hotelRoutes)
-
+app.use("/api/my-bookings",bookingRoutes)
 app.listen(7000, () => {
   console.log("Server is running on http://localhost:7000");
 });
